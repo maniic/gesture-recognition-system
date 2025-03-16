@@ -1,0 +1,152 @@
+# Gesture Recognition System - Setup and Usage Instructions
+
+## Overview
+
+This document provides detailed instructions for setting up and using the Gesture Recognition System. The system tracks hand movements using computer vision and applies Kalman filtering to improve tracking accuracy.
+
+## Prerequisites
+
+Before installing the system, ensure your computer meets the following requirements:
+
+1. **Operating System**: Windows 10/11, macOS 10.14+, or Linux (Ubuntu 18.04+ recommended)
+2. **Python**: Version 3.8 or higher
+3. **Hardware**:
+   - CPU: Intel Core i5 (7th gen or later) / AMD Ryzen 5 or equivalent
+   - RAM: 8GB or more
+   - Webcam: Integrated or external webcam with at least 720p resolution
+   - Storage: At least 1GB of free disk space
+
+## Installation
+
+Follow these steps to install the Gesture Recognition System:
+
+1. **Create a Python virtual environment (recommended):**
+   ```
+   # For Windows
+   python -m venv venv
+   venv\Scripts\activate
+
+   # For macOS/Linux
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+
+2. **Install required packages:**
+   ```
+   pip install -r requirements.txt
+   ```
+
+3. **Verify installation:**
+   ```
+   python verify_installation.py
+   ```
+   
+   This script checks for the following dependencies:
+   - OpenCV (computer vision library)
+   - MediaPipe (hand tracking framework)
+   - NumPy (numerical computation)
+   - Matplotlib (visualization - optional but recommended)
+
+## Running the System
+
+### Basic Usage
+
+To run the gesture recognition system with default settings:
+
+```
+python main.py
+```
+
+This will:
+1. Access your default webcam (usually the integrated camera)
+2. Start tracking hand movements
+3. Apply Kalman filtering to smooth the tracking
+4. Display the recognized gestures in real-time
+
+### Advanced Options
+
+The system supports several command-line arguments:
+
+```
+python main.py --visualize --save-plot --camera 1
+```
+
+Parameters:
+- `--visualize`: Enable matplotlib visualization of tracking data
+- `--save-plot`: Save the tracking visualization as an image when exiting
+- `--camera N`: Use camera with index N (default: 0)
+
+### Supported Gestures
+
+The system recognizes the following hand gestures:
+1. **Open Hand**: All fingers extended
+2. **Fist**: All fingers closed
+3. **Pointing**: Index finger extended, others closed
+4. **Peace Sign**: Index and middle fingers extended in a V shape
+5. **Thumbs Up**: Thumb extended, other fingers closed
+6. **OK Sign**: Thumb and index finger forming a circle, others extended
+
+## Troubleshooting
+
+### Camera Access Issues
+
+If the system cannot access your camera:
+1. Check if another application is using the camera
+2. Try specifying a different camera index with `--camera 1`, `--camera 2`, etc.
+3. On Windows, check Device Manager to ensure the camera is functioning
+4. On macOS, check System Preferences > Security & Privacy > Camera
+5. On Linux, ensure you have the necessary permissions to access the camera
+
+### Performance Issues
+
+If the system runs slowly:
+1. Close other resource-intensive applications
+2. Try running in a better-lit environment (improves hand detection)
+3. Position your hand at a moderate distance from the camera
+4. Try a different webcam if available
+
+### MediaPipe Installation Problems
+
+If you encounter issues with MediaPipe:
+1. Ensure you have the latest pip version: `pip install --upgrade pip`
+2. Try installing MediaPipe separately: `pip install mediapipe`
+3. On Windows, ensure you have Visual C++ redistributable installed
+4. On Linux, install required dependencies: `sudo apt-get install libgl1-mesa-glx`
+
+## Running Tests
+
+The system includes test scripts to verify functionality:
+
+1. **Kalman Filter Tests:**
+   ```
+   python test_kalman.py
+   ```
+   This tests the Kalman filter implementation with simulated hand movements.
+
+2. **System Tests:**
+   ```
+   python test_system.py
+   ```
+   This runs comprehensive tests of all system components.
+
+## Development Notes
+
+### Project Structure
+
+- `main.py`: Main application with gesture recognition system
+- `verify_installation.py`: Script to verify dependencies are installed correctly
+- `visualize.py`: Visualization utilities for tracking data
+- `test_kalman.py`: Tests for the Kalman filter implementation
+- `test_system.py`: Comprehensive system tests
+- `requirements.txt`: List of required Python packages
+
+### Extending the System
+
+To add new gestures:
+1. Modify the `recognize_gesture` method in the `GestureRecognizer` class in `main.py`
+2. Add appropriate conditions based on the finger positions
+3. Define threshold values for the new gesture
+
+To improve tracking accuracy:
+1. Adjust Kalman filter parameters in the `KalmanFilter` class
+2. Experiment with different process_noise and measurement_noise values 
